@@ -4,31 +4,34 @@
 -- Set this property to true to always open in a new window
 property open_in_new_window : false
 
+-- Set this property to true to always open in a new tab 
+property open_in_new_tab: false
+
 -- Handlers
 on new_window()
-	tell application "iTerm" to create window with default profile
+	tell application "iTerm2" to create window with default profile
 end new_window
 
 on new_tab()
-	tell application "iTerm" to tell the first window to create tab with default profile
+	tell application "iTerm2" to tell the first window to create tab with default profile
 end new_tab
 
 on call_forward()
-	tell application "iTerm" to activate
+	tell application "iTerm2" to activate
 end call_forward
 
 on is_running()
-	application "iTerm" is running
+	application "iTerm2" is running
 end is_running
 
 on has_windows()
 	if not is_running() then return false
-	if windows of application "iTerm" is {} then return false
+	if windows of application "iTerm2" is {} then return false
 	true
 end has_windows
 
 on send_text(custom_text)
-	tell application "iTerm" to tell the first window to tell current session to write text custom_text
+	tell application "iTerm2" to tell the first window to tell current session to write text custom_text
 end send_text
 
 -- Main
@@ -37,7 +40,9 @@ on alfred_script(query)
 		if open_in_new_window then
 			new_window()
 		else
-			new_tab()
+			if open_in_new_tab then
+				new_tab()
+			end if
 		end if
 	else
 		-- If iTerm is not running and we tell it to create a new window, we get two
